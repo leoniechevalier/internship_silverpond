@@ -29,8 +29,6 @@ def find_class (class_name,array,column):
 # find where data is stored
 
 # read in data    
-test_im = pd.read_csv(path+filename, header=0)
-cl_des = pd.read_csv('class-descriptions-boxable.csv', names=['LabelName','name'])
 
 def read_file(filename, path):
 	filename = np.array(filename)
@@ -69,13 +67,39 @@ def read_file(filename, path):
 
 		# code that auto matches and joins any frames
 
-	def matching(frames):
 
-		# identify keys on which to match
 
-		# loop over all files and combine them into one large dataframe
+	def matching_columns(frames):
+    '''assumes consistent labeling of columns '''
+    col =[]
+    for i in frames[0]:
+        for j in frames[1]:
+            if (i==j):
+                col.append(i)
+    if len(np.array(col))>1:
+        print ('more then one matching column')
+    return col
 
-		return matched_frame
+
+	def combining(frames):
+		''' combines data frames into large master frame
+		is however reliant on feeding in data frames in the correct order
+		could be fixed with a try and except statement that would put the incompatible dataframe 
+		to the end of the list until enough have been maerged that it can fit in'''
+
+		n_frames=len(frames) # number of frames
+		master_frame=frames[0]
+
+		def merge(frame1,frame2):
+			col = matching_columns([frame1,frame2])[0] # just in case there are more then 1
+			merged_frame = frame1.merge(frame2, on = col)
+			return merged_frame
+
+		for i in np.arange(1.,n_frames,1.):
+			mer= merge(master_frame,frame[i])
+			master_frame=mer
+
+		return master_frame
 
 
 
