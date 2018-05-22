@@ -67,5 +67,15 @@ def read_file(filename, path):
 	
 		return dataframe
 
+		# code that auto matches and joins any frames
+
+	def matching(frames):
+
+		# identify keys on which to match
+
+		# loop over all files and combine them into one large dataframe
+
+		return matched_frame
+
 
 
